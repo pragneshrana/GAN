@@ -20,6 +20,8 @@
 
 [Small Video Tutorials](https://www.youtube.com/watch?v=RRTuumxm3CE&list=PLdxQ7SoCLQAMGgQAIAcyRevM8VvygTpCu)
 
+[Understanding the Technology Behind DeepFakes](https://www.alanzucconi.com/2018/03/14/understanding-the-technology-behind-deepfakes/)
+
 ### Code References
 
 [KerasGAN - Python library with loads of implementations of GANs](https://github.com/eriklindernoren/Keras-GAN)
@@ -29,3 +31,9 @@
 [CycleGAN - PyTorch implementation of CycleGAN](https://github.com/junyanz/CycleGAN)
 
 [Wasserstein GAN - Code accompanying the Wasserstein GAN paper](https://github.com/martinarjovsky/WassersteinGAN)
+
+[Deepfakes Implement with Pytorch] (https://hanqingguo.github.io/Deepfakes)
+
+[First Order Model](https://github.com/AliaksandrSiarohin/first-order-model)
+
+
