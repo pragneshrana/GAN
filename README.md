@@ -32,7 +32,7 @@
 
 [Wasserstein GAN - Code accompanying the Wasserstein GAN paper](https://github.com/martinarjovsky/WassersteinGAN)
 
-[Deepfakes Implement with Pytorch] (https://hanqingguo.github.io/Deepfakes)
+[Deepfakes Implement with Pytorch](https://hanqingguo.github.io/Deepfakes)
 
 [First Order Model](https://github.com/AliaksandrSiarohin/first-order-model)
 
