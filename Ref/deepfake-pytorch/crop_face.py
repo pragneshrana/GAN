@@ -7,10 +7,11 @@ import dlib
 import cv2
 import os
 
-Images_Folder = 'train/me'
-OutFace_Folder = 'train/me_face/'
+Images_Folder = './train/personC'
+OutFace_Folder = './train/personC_face/'
 
 Images_Path = os.path.join(os.path.realpath('.'), Images_Folder)
+Out_Path = os.path.join(os.path.realpath('.'), OutFace_Folder)
 
 pictures = os.listdir(Images_Path)
 
@@ -46,6 +47,7 @@ for f in pictures:
         crop_img = img[top:bot, left:right]
         #cv2.imshow(f, img)
         #cv2.imshow(f, crop_img)
+        print(OutFace_Folder,f[:-4],"_face.jpg")
         cv2.imwrite(OutFace_Folder+f[:-4]+"_face.jpg", crop_img)
         #k = cv2.waitKey(1000)
         #cv2.destroyAllWindows()
