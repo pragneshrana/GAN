@@ -12,13 +12,31 @@ cap = cv2.VideoCapture(video_Path)
 n=0
 fourcc = cv2.VideoWriter_fourcc('M', 'J', 'P', 'G')
 frame_width = int(cap.get(3))
-frame_height = int(cap.get(4))
+frame_height =  int(cap.get(4))
 out = cv2.VideoWriter('~/Git/GAN/Ref/deepfake-pytorch/train/personA/liu_out.avi', fourcc, 10, (frame_width, frame_height),isColor=False)
 while (cap.isOpened()) and n<100:
     ret, frame = cap.read()
     # frame = frame.reshape(frame.shape[1],frame.shape[0],3)
     save_images = os.path.join(save_path, str(n)+'.jpg')
-    cv2.imwrite(save_images, frame)
+
+    #Resizing the image ......
+
+    #percent by which the image is resized
+    scale_percent = 50
+
+    #calculate the 50 percent of original dimensions
+    width = 960
+    height = 540
+
+    # dsize
+    dsize = (width, height)
+
+    # resize image
+    output = cv2.resize(frame, dsize)
+
+    cv2.imwrite(save_images, output) #......change
+
+
     # n = n + 1
     if ret==True:
         # out.write(frame)

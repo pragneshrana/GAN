@@ -1,7 +1,3 @@
-# author:oldpan
-# data:2018-4-16
-# Just for study and research
-
 from __future__ import print_function
 import argparse
 import os
@@ -22,7 +18,7 @@ from training_data import get_training_data
 parser = argparse.ArgumentParser(description='DeepFake-Pytorch')
 parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                     help='input batch size for training (default: 64)')
-parser.add_argument('--epochs', type=int, default=100000, metavar='N',
+parser.add_argument('--epochs', type=int, default=5, metavar='N',
                     help='number of epochs to train (default: 10000)')
 parser.add_argument('--no-cuda', action='store_true', default=False,
                     help='enables CUDA training')
@@ -39,6 +35,7 @@ if args.cuda is True:
     device = torch.device('cuda:0')
     cudnn.benchmark = True
 else:
+    device = torch.device('cpu')
     print('===> Using CPU to train')
 
 torch.manual_seed(args.seed)
@@ -46,8 +43,8 @@ if args.cuda:
     torch.cuda.manual_seed(args.seed)
 
 print('===> Loaing datasets')
-images_A = get_image_paths("train/trump_face")
-images_B = get_image_paths("train/me_face")
+images_A = get_image_paths("train/personA_face")
+images_B = get_image_paths("train/personB_face")
 images_A = load_images(images_A) / 255.0
 images_B = load_images(images_B) / 255.0
 #images_A += images_B.mean(axis=(0, 1, 2)) - images_A.mean(axis=(0, 1, 2))
@@ -77,8 +74,8 @@ optimizer_2 = optim.Adam([{'params': model.encoder.parameters()},
                          , lr=5e-5, betas=(0.5, 0.999))
 
 # print all the parameters im model
-# s = sum([np.prod(list(p.size())) for p in model.parameters()])
-# print('Number of params: %d' % s)
+s = sum([np.prod(list(p.size())) for p in model.parameters()])
+print('Number of params: %d' % s)
 
 if __name__ == "__main__":
 
@@ -90,20 +87,22 @@ if __name__ == "__main__":
         warped_A, target_A = get_training_data(images_A, batch_size)
         warped_B, target_B = get_training_data(images_B, batch_size)
 
-        #print("warped_A size is {}".format(warped_A.shape))
+        print("warped_A size is {}".format(warped_A.shape))
+        print("warped_A type is {}".format(type(warped_A)))
 
         warped_A, target_A = toTensor(warped_A), toTensor(target_A)
         warped_B, target_B = toTensor(warped_B), toTensor(target_B)
 
-        if args.cuda:
-            warped_A = warped_A.to(device).float()
-            target_A = target_A.to(device).float()
-            warped_B = warped_B.to(device).float()
-            target_B = target_B.to(device).float()
+        # if args.cuda:
+        warped_A = warped_A.to(device).float()
+        target_A = target_A.to(device).float()
+        warped_B = warped_B.to(device).float()
+        target_B = target_B.to(device).float()
 
         optimizer_1.zero_grad()
         optimizer_2.zero_grad()
 
+        print("warped_A type is {}".format(type(warped_A)))
 
         warped_A = model(warped_A, 'A')
         warped_B = model(warped_B, 'B')
@@ -162,6 +161,7 @@ if __name__ == "__main__":
         figure = np.clip(figure * 255, 0, 255).astype('uint8')
 
         cv2.imshow("", figure)
+        cv2.imwrite("combined"+str(epoch)+".jpg",figure)
         key = cv2.waitKey(1)
         if key == ord('q'):
             exit()

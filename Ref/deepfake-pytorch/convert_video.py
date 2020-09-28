@@ -6,15 +6,17 @@ from models import Autoencoder, toTensor, var_to_np
 from image_augmentation import random_warp
 import numpy as np
 
-video_name = 'train/trump.mp4'
+video_name = 'train/me.mp4'
 video_path = os.path.join(os.path.realpath('.'), video_name)
-#/home/hanqing/deepfake/Faceswap-Deepfake-Pytorch/train/liu.mp4
 
 ##################################################
 # Extract faces
 ##################################################
-device = torch.device('cuda:0')
+# device = torch.device('cuda:0')
+device = torch.device('cpu')
+
 def extract_face(frame):
+    print('Method called - extract_face')
     detector = dlib.get_frontal_face_detector()
     img = frame
     dets = detector(img, 1)
@@ -25,43 +27,48 @@ def extract_face(frame):
         position['right'] = face.right()
         position['bot'] = face.bottom()
         croped_face = img[position['top']:position['bot'], position['left']:position['right']]
-
+        print('Method Exiting - extract_face')
         return position, croped_face
 
 
 def extract_faces(video_path):
+    print('Method called - extract_faces')
     cap = cv2.VideoCapture(video_path)
     n = 0
+    print(cap.isOpened())
     while (cap.isOpened() and n<1000):
+        print('Inside Loop')
         _, frame = cap.read()
-        position, croped_face= extract_face(frame)
-        #print(croped_face.shape)
-        #exit(0)
-        #cv2.imshow("croped_face",croped_face)
-        #cv2.waitKey(2000)
-        #cv2.destroyAllWindows()
-        converted_face = convert_face(croped_face)
+        position, croped_face= extract_face(frame) #function called
+        # print(croped_face.shape)
+        # exit(0)
+        # cv2.imshow("croped_face",croped_face)
+        # cv2.waitKey(2000)
+        # cv2.destroyAllWindows()
+        converted_face = convert_face(croped_face)  #function called
         converted_face = converted_face.squeeze(0)
         converted_face = var_to_np(converted_face)
         converted_face = converted_face.transpose(1,2,0)
         converted_face = np.clip(converted_face * 255, 0, 255).astype('uint8')
-        cv2.imshow("converted_face", cv2.resize(converted_face, (256,256)))
-        cv2.waitKey(2000)
+        # cv2.imshow("converted_face", cv2.resize(converted_face, (256,256)))
+        # cv2.waitKey(2000)
         back_size = cv2.resize(converted_face, (croped_face.shape[0]-120, croped_face.shape[1]-120))
-        #cv2.imshow("back_face", back_size)
-        #cv2.waitKey(1000)
-        #print(frame.shape)
-        #print(back_size.shape)
-        merged = merge(position, back_size, frame)
-        #print(merged.shape)
+        cv2.imshow("back_face", back_size)
+        # cv2.waitKey(1000)
+        # print(frame.shape)
+        # print(back_size.shape)
+        merged = merge(position, back_size, frame) #function called
+        # print(merged.shape)
         out.write(merged)
-        # cv2.imshow('frame', frame)
+        cv2.imshow('frame', frame)
         # if cv2.waitKey(1) & 0xFF == ord('q'):
         #     break
         n = n + 1
-        print(n)
+        # print(n)
+    print("exit")
 
 def convert_face(croped_face):
+    print('Method called - convert_face')
     resized_face = cv2.resize(croped_face, (256, 256))
     normalized_face = resized_face / 255.0
     #normalized_face = normalized_face.reshape(1, normalized_face.shape[0], normalized_face.shape[1], normalized_face.shape[2])
@@ -80,6 +87,7 @@ def convert_face(croped_face):
     return converted_face
 
 def merge(postion, face, body):
+    print('Method called - convert_face')
     #im = cv2.imread("train/images/wood-texture.jpg")
     #obj = cv2.imread("train/images/iloveyouticket.jpg")
     #print(body.shape)
