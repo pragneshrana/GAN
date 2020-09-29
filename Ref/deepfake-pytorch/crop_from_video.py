@@ -21,15 +21,15 @@ while (cap.isOpened()) and n<100:
 
     #Resizing the image ......
 
-    #percent by which the image is resized
-    scale_percent = 50
+    # #percent by which the image is resized
+    # scale_percent = 50
 
-    #calculate the 50 percent of original dimensions
-    width = 960
-    height = 540
+    # #calculate the 50 percent of original dimensions
+    # width = 960
+    # height = 540
 
     # dsize
-    dsize = (width, height)
+    dsize = (frame_width, frame_height)
 
     # resize image
     output = cv2.resize(frame, dsize)

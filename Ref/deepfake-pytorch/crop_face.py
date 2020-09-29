@@ -10,8 +10,8 @@ import argparse
 import largest_face_detector
 import copy
 
-Images_Folder = 'train/personC'
-OutFace_Folder = 'train/personC_face/'
+Images_Folder = 'train/personB'
+OutFace_Folder = 'train/personB_face/'
 
 Images_Path = os.path.join(os.path.realpath('.'), Images_Folder)
 Out_Path = os.path.join(os.path.realpath('.'), OutFace_Folder)
@@ -36,7 +36,7 @@ print(pictures)
 
 def rotate(img):
     rows,cols,_ = img.shape
-    M = cv2.getRotationMatrix2D((cols / 2, rows / 2), -90, 1)
+    M = cv2.getRotationMatrix2D((cols, rows ), 0, 1)
     dst = cv2.warpAffine(img, M, (cols, rows))
     return dst
 
