@@ -6,7 +6,7 @@ from models import Autoencoder, toTensor, var_to_np
 from image_augmentation import random_warp
 import numpy as np
 
-video_name = 'train/me.mp4'
+video_name = 'train/trump.mp4'
 video_path = os.path.join(os.path.realpath('.'), video_name)
 
 ##################################################
@@ -36,7 +36,7 @@ def extract_faces(video_path):
     cap = cv2.VideoCapture(video_path)
     n = 0
     print(cap.isOpened())
-    while (cap.isOpened() and n<1000):
+    while (cap.isOpened() and n<10):
         print('Inside Loop')
         _, frame = cap.read()
         position, croped_face= extract_face(frame) #function called
@@ -50,21 +50,21 @@ def extract_faces(video_path):
         converted_face = var_to_np(converted_face)
         converted_face = converted_face.transpose(1,2,0)
         converted_face = np.clip(converted_face * 255, 0, 255).astype('uint8')
-        # cv2.imshow("converted_face", cv2.resize(converted_face, (256,256)))
-        # cv2.waitKey(2000)
-        back_size = cv2.resize(converted_face, (croped_face.shape[0]-120, croped_face.shape[1]-120))
-        cv2.imshow("back_face", back_size)
+        cv2.imshow("converted_face", cv2.resize(converted_face, (256,256)))
+        cv2.waitKey(2000)
+        back_size = cv2.resize(converted_face, (croped_face.shape[0], croped_face.shape[1]))
+        # cv2.imshow("back_face", back_size)
         # cv2.waitKey(1000)
         # print(frame.shape)
         # print(back_size.shape)
         merged = merge(position, back_size, frame) #function called
         # print(merged.shape)
         out.write(merged)
-        cv2.imshow('frame', frame)
+        # cv2.imshow('frame', frame)
         # if cv2.waitKey(1) & 0xFF == ord('q'):
         #     break
         n = n + 1
-        # print(n)
+        print(n)
     print("exit")
 
 def convert_face(croped_face):
@@ -105,7 +105,7 @@ def merge(postion, face, body):
 if __name__ == "__main__":
     print(video_path)
     fourcc = cv2.VideoWriter_fourcc('M', 'J', 'P', 'G')
-    out = cv2.VideoWriter("me4_out.avi", fourcc, 3, (1920, 1080))
+    out = cv2.VideoWriter("me4_out.avi", fourcc, 3, (450, 360))
     extract_faces(video_path)
 
     out.release()

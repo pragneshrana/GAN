@@ -18,7 +18,7 @@ from training_data import get_training_data
 parser = argparse.ArgumentParser(description='DeepFake-Pytorch')
 parser.add_argument('--batch-size', type=int, default=64, metavar='N',
                     help='input batch size for training (default: 64)')
-parser.add_argument('--epochs', type=int, default=5, metavar='N',
+parser.add_argument('--epochs', type=int, default=200, metavar='N',
                     help='number of epochs to train (default: 10000)')
 parser.add_argument('--no-cuda', action='store_true', default=False,
                     help='enables CUDA training')
@@ -160,7 +160,7 @@ if __name__ == "__main__":
         #exit(0)
         figure = np.clip(figure * 255, 0, 255).astype('uint8')
 
-        cv2.imshow("", figure)
+        # cv2.imshow("", figure)
         cv2.imwrite("combined"+str(epoch)+".jpg",figure)
         key = cv2.waitKey(1)
         if key == ord('q'):
